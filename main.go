@@ -1,29 +1,19 @@
 package main
 
-// example 1
-// import (
-// 	"fmt"
-// 	"time"
-// )
-
-// func say(s string) {
-// 	for i := 0; i < 3; i++ {
-// 		fmt.Println(s)
-// 	}
-// }
-
-// func main() {
-// 	go say("hey")
-// 	go say("there")
-// 	time.Sleep(time.Second)
-// }
-
-// example 2
 import (
-	"fmt"
 	"sync"
 	"time"
 )
+
+import (
+	"fmt"
+)
+
+func Say(s string) {
+	for i := 0; i < 3; i++ {
+		fmt.Println(s)
+	}
+}
 
 func findUserById(uid string) string {
 	defer wg.Done()
