@@ -14,3 +14,9 @@ func TestExample_2(t *testing.T) {
 	checkSubStatus("a1")
 	getQuotes("a1")
 }
+
+func TestRecycling_LinearSolution(t *testing.T) {
+	garbage := []string{"plastic bottle", "plastic bottle", "apple", "banana"}
+	plasticOnly := FilterNonPlastic(garbage)
+	RecyclePlastic(plasticOnly)
+}

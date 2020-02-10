@@ -1,6 +1,7 @@
 package main
 
 import (
+	"strings"
 	"time"
 )
 
@@ -30,4 +31,28 @@ func getQuotes(uid string) int {
 	time.Sleep(time.Second)
 	fmt.Println("quote found")
 	return 3000
+}
+
+func FilterNonPlastic(garbage []string) []string {
+	fmt.Printf("Garbage: %s \n", strings.Join(garbage, ", "))
+	var plasticOnly []string
+	for _, g := range garbage {
+		time.Sleep(time.Millisecond * 100)
+		if !strings.Contains(g, "plastic") {
+			continue
+		}
+		plasticOnly = append(plasticOnly, g)
+	}
+	fmt.Printf("FilterNonPlastic: %s \n", strings.Join(plasticOnly, ", "))
+	return plasticOnly
+}
+
+func RecyclePlastic(plastics []string) []string {
+	var rawPlastic []string
+	for _, _ = range plastics {
+		time.Sleep(time.Millisecond * 100)
+		rawPlastic = append(rawPlastic, "raw plastic")
+	}
+	fmt.Printf("FilterNonPlastic: %s \n", strings.Join(rawPlastic, ", "))
+	return plastics
 }
