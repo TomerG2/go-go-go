@@ -43,3 +43,19 @@ func generateQuoteWait(s string, wg *sync.WaitGroup) {
 	time.Sleep(funcWaitTime)
 	fmt.Println("quote generated !")
 }
+
+// Channel functions
+func getUserChannel(s string, userOut chan string) {
+	time.Sleep(funcWaitTime)
+	userOut <- s
+	fmt.Println("user found !")
+}
+
+func getUserSubChannel(userIn chan string, subscriptionOut chan string) {
+	time.Sleep(funcWaitTime)
+	<-userIn
+	subscriptionOut <- "free"
+	subscriptionOut <- "north"
+	subscriptionOut <- "veggie"
+	fmt.Println("subscriptions found !")
+}

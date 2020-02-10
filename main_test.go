@@ -28,3 +28,11 @@ func TestQuoteAPI_WaitGroup(t *testing.T) {
 
 	wg.Wait()
 }
+
+func TestQuoteAPI_Channels(t *testing.T) {
+	user := make(chan string)
+	subsQueue := make(chan string)
+	//quoute := make(chan string)
+	go getUserChannel("a1", user)
+	go getUserSubChannel(user, subsQueue)
+}
