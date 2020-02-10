@@ -7,7 +7,13 @@ import (
 	"time"
 )
 
-func TestExample_LinearSolution(t *testing.T) {
+func TestQuoteAPI_Procedural(t *testing.T) {
+	getUser("a1")
+	getUserSub("a1")
+	generateQuote("a1")
+}
+
+func TestQuoteAPI_Goroutines(t *testing.T) {
 	getUser("a1")
 	getUserSub("a1")
 	generateQuote("a1")
@@ -15,31 +21,47 @@ func TestExample_LinearSolution(t *testing.T) {
 
 var wg sync.WaitGroup
 
-func TestExample_WaitGroup(t *testing.T) {
+func TestQuoteAPI_WaitGroup(t *testing.T) {
 	wg.Add(1)
-	go getUser("a1")
+	go getUserWait("a1")
 	wg.Add(1)
-	go getUserSub("a1")
+	go getUserSubWait("a1")
 	wg.Add(1)
-	go generateQuote("a1")
+	go generateQuoteWait("a1")
 
 	wg.Wait()
 }
 
+// Helper functions
 func getUser(s string) {
 	time.Sleep(time.Millisecond * 500)
 	fmt.Println("user found !")
-	wg.Done()
 }
 
 func getUserSub(s string) {
 	time.Sleep(time.Millisecond * 500)
 	fmt.Println("subscription found !")
-	wg.Done()
 }
 
 func generateQuote(s string) {
 	time.Sleep(time.Millisecond * 500)
 	fmt.Println("quote generated !")
-	wg.Done()
+}
+
+func getUserWait(s string) {
+	defer wg.Done()
+	time.Sleep(time.Millisecond * 500)
+	fmt.Println("user found !")
+}
+
+func getUserSubWait(s string) {
+	defer wg.Done()
+	time.Sleep(time.Millisecond * 500)
+	fmt.Println("subscription found !")
+}
+
+func generateQuoteWait(s string) {
+	defer wg.Done()
+	time.Sleep(time.Millisecond * 500)
+	fmt.Println("quote generated !")
 }
