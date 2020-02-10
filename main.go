@@ -6,7 +6,10 @@ import (
 	"time"
 )
 
-// Helper functions
+// configuration
+var funcWaitTime = time.Millisecond * 300
+
+// Simple functions
 func getUser(s string) {
 	time.Sleep(funcWaitTime)
 	fmt.Println("user found !")
@@ -22,6 +25,7 @@ func generateQuote(s string) {
 	fmt.Println("quote generated !")
 }
 
+// Wait group functions
 func getUserWait(s string, wg *sync.WaitGroup) {
 	defer wg.Done()
 	time.Sleep(funcWaitTime)
@@ -39,5 +43,3 @@ func generateQuoteWait(s string, wg *sync.WaitGroup) {
 	time.Sleep(funcWaitTime)
 	fmt.Println("quote generated !")
 }
-
-var funcWaitTime = time.Millisecond * 300
