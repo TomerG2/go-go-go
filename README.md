@@ -1,2 +1,2 @@
-# go-go-go
-Go Go Go tech talk (haifa:dev)
+# Go Go Go - A quick intro to concurrency in Go
+
