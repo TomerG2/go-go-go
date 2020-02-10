@@ -3,6 +3,7 @@ package main
 import (
 	"sync"
 	"testing"
+	"time"
 )
 
 func TestQuoteAPI_Sync(t *testing.T) {
@@ -30,9 +31,16 @@ func TestQuoteAPI_WaitGroup(t *testing.T) {
 }
 
 func TestQuoteAPI_Channels(t *testing.T) {
-	user := make(chan string)
-	subsQueue := make(chan string)
-	//quoute := make(chan string)
-	go getUserChannel("a1", user)
-	go getUserSubChannel(user, subsQueue)
+	doneChan := make(chan string)
+	go func() {
+		user := make(chan string)
+		subsQueue := make(chan string)
+		quotes := make(chan int)
+		go getUserChannel("a1", user)
+		go getUserSubChannel(user, subsQueue)
+		go generateQuoteChannel(subsQueue, quotes)
+		doneChan <- "I’m all done!"
+	}()
+	<-doneChan                    // block until go routine signals work is done
+	<-time.After(time.Second * 5) //Receiving from channel after 5 sec
 }

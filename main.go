@@ -53,9 +53,18 @@ func getUserChannel(s string, userOut chan string) {
 
 func getUserSubChannel(userIn chan string, subscriptionOut chan string) {
 	time.Sleep(funcWaitTime)
-	<-userIn
+	s := <-userIn
 	subscriptionOut <- "free"
 	subscriptionOut <- "north"
 	subscriptionOut <- "veggie"
+	fmt.Println("subscriptions found !", s)
+}
+
+func generateQuoteChannel(subIn chan string, quotes chan int) {
+	time.Sleep(funcWaitTime)
+	<-subIn
+	quotes <- 3000
+	quotes <- 2500
+	quotes <- 3200
 	fmt.Println("subscriptions found !")
 }
