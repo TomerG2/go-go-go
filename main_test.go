@@ -2,11 +2,13 @@ package main
 
 import (
 	"testing"
+	"time"
 )
 
 func TestExample_Intro(t *testing.T) {
-	Say("hey")
-	Say("there")
+	go Say("hey")
+	go Say("there")
+	time.Sleep(time.Second)
 }
 
 func TestRecycling_LinearSolution(t *testing.T) {
