@@ -15,24 +15,6 @@ func Say(s string) {
 	}
 }
 
-func findUserById(uid string) string {
-	time.Sleep(time.Second)
-	fmt.Println("user found")
-	return "John"
-}
-
-func checkSubStatus(uid string) bool {
-	time.Sleep(time.Second)
-	fmt.Println("subscription found")
-	return true
-}
-
-func getQuotes(uid string) int {
-	time.Sleep(time.Second)
-	fmt.Println("quote found")
-	return 3000
-}
-
 func FilterNonPlastic(garbage []string) []string {
 	fmt.Printf("Garbage: %s \n", strings.Join(garbage, ", "))
 	var plasticOnly []string
