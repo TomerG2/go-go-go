@@ -2,9 +2,22 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"sync"
 	"time"
 )
+
+func quoteHandler(w http.ResponseWriter, req *http.Request) {
+	getUser("a1")
+	getUserSub("a1")
+	generateQuote("a1")
+	fmt.Fprintf(w, "Done quote ready\n")
+}
+
+func main() {
+	http.HandleFunc("/quote", quoteHandler)
+	http.ListenAndServe(":8090", nil)
+}
 
 // configuration
 var funcWaitTime = time.Millisecond * 300
@@ -25,6 +38,7 @@ func generateQuote(s string) {
 	fmt.Println("quote generated !")
 }
 
+// Old example
 // Wait group functions
 func getUserWait(s string, wg *sync.WaitGroup) {
 	defer wg.Done()
@@ -42,29 +56,4 @@ func generateQuoteWait(s string, wg *sync.WaitGroup) {
 	defer wg.Done()
 	time.Sleep(funcWaitTime)
 	fmt.Println("quote generated !")
-}
-
-// Channel functions
-func getUserChannel(s string, userOut chan string) {
-	time.Sleep(funcWaitTime)
-	userOut <- s
-	fmt.Println("user found !")
-}
-
-func getUserSubChannel(userIn chan string, subscriptionOut chan string) {
-	time.Sleep(funcWaitTime)
-	s := <-userIn
-	subscriptionOut <- "free"
-	subscriptionOut <- "north"
-	subscriptionOut <- "veggie"
-	fmt.Println("subscriptions found !", s)
-}
-
-func generateQuoteChannel(subIn chan string, quotes chan int) {
-	time.Sleep(funcWaitTime)
-	<-subIn
-	quotes <- 3000
-	quotes <- 2500
-	quotes <- 3200
-	fmt.Println("subscriptions found !")
 }
