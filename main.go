@@ -68,11 +68,3 @@ func generateQuoteChannel(subIn chan string, quotes chan int) {
 	quotes <- 3200
 	fmt.Println("subscriptions found !")
 }
-
-func finder(mine [5]string, oreChannel chan string) {
-	for _, item := range mine {
-		if item == "ore" {
-			oreChannel <- item //send item on oreChannel
-		}
-	}
-}
