@@ -1,6 +1,7 @@
 package main
 
 import (
+	"net/http"
 	"sync"
 	"testing"
 )
@@ -27,4 +28,19 @@ func TestQuoteAPI_WaitGroup(t *testing.T) {
 	go generateQuoteWait("a1", &wg)
 
 	wg.Wait()
+}
+
+func TestQuoteAPI_Load(t *testing.T) {
+	var wg sync.WaitGroup
+
+	for i := 0; i < 100; i++ {
+		wg.Add(1)
+		go callAPI("http://localhost:8090/quote/v3", &wg)
+	}
+	wg.Wait()
+}
+
+func callAPI(url string, wg *sync.WaitGroup) {
+	defer wg.Done()
+	http.Get(url)
 }
