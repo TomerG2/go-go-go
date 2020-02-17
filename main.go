@@ -7,6 +7,14 @@ import (
 	"time"
 )
 
+var funcWaitTime = time.Millisecond * 300
+
+func main() {
+	http.HandleFunc("/quote", quoteHandler)
+	http.HandleFunc("/quote/v2", quoteHandlerConcurrent)
+	http.ListenAndServe(":8090", nil)
+}
+
 func quoteHandler(w http.ResponseWriter, req *http.Request) {
 	getUser("a1")
 	getUserSub("a1")
@@ -14,13 +22,12 @@ func quoteHandler(w http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(w, "Done quote ready\n")
 }
 
-func main() {
-	http.HandleFunc("/quote", quoteHandler)
-	http.ListenAndServe(":8090", nil)
+func quoteHandlerConcurrent(w http.ResponseWriter, req *http.Request) {
+	go getUser("a1")
+	go getUserSub("a1")
+	go generateQuote("a1")
+	fmt.Fprintf(w, "Done quote ready\n")
 }
-
-// configuration
-var funcWaitTime = time.Millisecond * 300
 
 // Simple functions
 func getUser(s string) {
@@ -38,8 +45,7 @@ func generateQuote(s string) {
 	fmt.Println("quote generated !")
 }
 
-// Old example
-// Wait group functions
+// Wait group functions (old example)
 func getUserWait(s string, wg *sync.WaitGroup) {
 	defer wg.Done()
 	time.Sleep(funcWaitTime)

@@ -3,7 +3,6 @@ package main
 import (
 	"sync"
 	"testing"
-	"time"
 )
 
 func TestQuoteAPI_Sync(t *testing.T) {
