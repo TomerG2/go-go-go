@@ -10,7 +10,7 @@ import (
 )
 
 // turn function logs off / on
-var logs = true
+var logs = false
 
 func main() {
 	http.HandleFunc("/quote", quoteHandler)
@@ -22,7 +22,7 @@ func main() {
 
 // Synchronous functions
 func quoteHandler(w http.ResponseWriter, req *http.Request) {
-	defer elapsed(w)()
+	defer elapsed("", w)()
 	getUser("a1")
 	getUserSub("a1")
 	generateQuote("a1")
@@ -51,7 +51,7 @@ func generateQuote(s string) {
 
 // Asynchronous functions, No Wait
 func quoteHandlerConcurrent(w http.ResponseWriter, req *http.Request) {
-	defer elapsed(w)()
+	defer elapsed("2", w)()
 	go getUser("a1")
 	go getUserSub("a1")
 	go generateQuote("a1")
@@ -59,7 +59,7 @@ func quoteHandlerConcurrent(w http.ResponseWriter, req *http.Request) {
 
 // Wait group functions (old example)
 func quoteHandlerWait(w http.ResponseWriter, req *http.Request) {
-	defer elapsed(w)()
+	defer elapsed("3", w)()
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go getUserWait("a1", &wg)
@@ -98,10 +98,11 @@ func generateQuoteWait(s string, wg *sync.WaitGroup) {
 var syntheticWaitTime = time.Millisecond * 300
 
 // Helper func to calculate running times
-func elapsed(w http.ResponseWriter) func() {
+func elapsed(version string, w http.ResponseWriter) func() {
 	start := time.Now()
 	return func() {
-		fmt.Printf("Quoute Ready ! [took=%v] [goroutines=%d]\n", time.Since(start), runtime.NumGoroutine())
-		fmt.Fprintf(w, "Quoute Ready ! [took=%v] [goroutines=%d]\n", time.Since(start), runtime.NumGoroutine())
+		msg := fmt.Sprintf("Quoute Ready [v=%s]! [took=%v] [goroutines=%d]\n", version, time.Since(start), runtime.NumGoroutine())
+		fmt.Printf(msg)
+		fmt.Fprintf(w, msg)
 	}
 }

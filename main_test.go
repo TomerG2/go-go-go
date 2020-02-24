@@ -62,11 +62,23 @@ func TestQuoteAPI_Load_v3(t *testing.T) {
 	wg.Wait()
 }
 
+func TestQuoteAPI_Load_v3_50k(t *testing.T) {
+	var wg sync.WaitGroup
+
+	for j := 0; j < 20000; j += 10000 {
+		for i := 0; i < 10000; i++ {
+			wg.Add(1)
+			go callAPI("http://localhost:8090/quote/v3", &wg, t)
+		}
+		wg.Wait()
+	}
+}
+
 func callAPI(url string, wg *sync.WaitGroup, t *testing.T) {
 	defer wg.Done()
 	res, err := http.Get(url)
-	defer res.Body.Close()
 	if err != nil {
 		t.Fatalf("qoute failed")
 	}
+	defer res.Body.Close()
 }
