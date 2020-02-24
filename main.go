@@ -17,10 +17,10 @@ func main() {
 
 // Synchronous functions
 func quoteHandler(w http.ResponseWriter, req *http.Request) {
+	defer elapsed("Done quote ready")()
 	getUser("a1")
 	getUserSub("a1")
 	generateQuote("a1")
-	fmt.Fprintf(w, "Done quote ready\n")
 }
 
 func getUser(s string) {
@@ -79,3 +79,11 @@ func generateQuoteWait(s string, wg *sync.WaitGroup) {
 
 // Mimics db / api processing time
 var syntheticWaitTime = time.Millisecond * 300
+
+// Helper func to calculate running times
+func elapsed(what string) func() {
+	start := time.Now()
+	return func() {
+		fmt.Printf("%s [took=%v]\n", what, time.Since(start))
+	}
+}
