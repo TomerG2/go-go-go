@@ -20,6 +20,8 @@ func TestQuoteAPI_Goroutines(t *testing.T) {
 
 func TestQuoteAPI_WaitGroup(t *testing.T) {
 	var wg sync.WaitGroup
+
+	// &wg passing a pointer to wg
 	wg.Add(1)
 	go getUserWait("a1", &wg)
 	wg.Add(1)
