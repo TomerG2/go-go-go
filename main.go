@@ -9,6 +9,9 @@ import (
 	"time"
 )
 
+// turn function logs off / on
+var logs = true
+
 func main() {
 	http.HandleFunc("/quote", quoteHandler)
 	http.HandleFunc("/quote/v2", quoteHandlerConcurrent)
@@ -27,17 +30,23 @@ func quoteHandler(w http.ResponseWriter, req *http.Request) {
 
 func getUser(s string) {
 	time.Sleep(syntheticWaitTime)
-	fmt.Println("user found !")
+	if logs {
+		fmt.Println("user found !")
+	}
 }
 
 func getUserSub(s string) {
 	time.Sleep(syntheticWaitTime)
-	fmt.Println("subscription found !")
+	if logs {
+		fmt.Println("subscription found !")
+	}
 }
 
 func generateQuote(s string) {
 	time.Sleep(syntheticWaitTime)
-	fmt.Println("quote generated !")
+	if logs {
+		fmt.Println("quote generated !")
+	}
 }
 
 // Asynchronous functions, No Wait
@@ -64,19 +73,25 @@ func quoteHandlerWait(w http.ResponseWriter, req *http.Request) {
 func getUserWait(s string, wg *sync.WaitGroup) {
 	defer wg.Done()
 	time.Sleep(syntheticWaitTime)
-	fmt.Println("user found !")
+	if logs {
+		fmt.Println("user found !")
+	}
 }
 
 func getUserSubWait(s string, wg *sync.WaitGroup) {
 	defer wg.Done()
 	time.Sleep(syntheticWaitTime)
-	fmt.Println("subscription found !")
+	if logs {
+		fmt.Println("subscription found !")
+	}
 }
 
 func generateQuoteWait(s string, wg *sync.WaitGroup) {
 	defer wg.Done()
 	time.Sleep(syntheticWaitTime)
-	fmt.Println("quote generated !")
+	if logs {
+		fmt.Println("quote generated !")
+	}
 }
 
 // Mimics db / api processing time
