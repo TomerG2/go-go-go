@@ -8,8 +8,6 @@ import (
 	"time"
 )
 
-var funcWaitTime = time.Millisecond * 300
-
 func main() {
 	http.HandleFunc("/quote", quoteHandler)
 	http.HandleFunc("/quote/v2", quoteHandlerConcurrent)
@@ -17,6 +15,7 @@ func main() {
 	http.ListenAndServe(":8090", nil)
 }
 
+// Synchronous functions
 func quoteHandler(w http.ResponseWriter, req *http.Request) {
 	getUser("a1")
 	getUserSub("a1")
@@ -24,6 +23,22 @@ func quoteHandler(w http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(w, "Done quote ready\n")
 }
 
+func getUser(s string) {
+	time.Sleep(syntheticWaitTime)
+	fmt.Println("user found !")
+}
+
+func getUserSub(s string) {
+	time.Sleep(syntheticWaitTime)
+	fmt.Println("subscription found !")
+}
+
+func generateQuote(s string) {
+	time.Sleep(syntheticWaitTime)
+	fmt.Println("quote generated !")
+}
+
+// Asynchronous functions, No Wait
 func quoteHandlerConcurrent(w http.ResponseWriter, req *http.Request) {
 	go getUser("a1")
 	go getUserSub("a1")
@@ -31,6 +46,7 @@ func quoteHandlerConcurrent(w http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(w, "Done quote ready\n")
 }
 
+// Wait group functions (old example)
 func quoteHandlerWait(w http.ResponseWriter, req *http.Request) {
 	var wg sync.WaitGroup
 	wg.Add(1)
@@ -43,37 +59,23 @@ func quoteHandlerWait(w http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(w, "Done quote ready\n")
 }
 
-// Simple functions
-func getUser(s string) {
-	time.Sleep(funcWaitTime)
-	fmt.Println("user found !")
-}
-
-func getUserSub(s string) {
-	time.Sleep(funcWaitTime)
-	fmt.Println("subscription found !")
-}
-
-func generateQuote(s string) {
-	time.Sleep(funcWaitTime)
-	fmt.Println("quote generated !")
-}
-
-// Wait group functions (old example)
 func getUserWait(s string, wg *sync.WaitGroup) {
 	defer wg.Done()
-	time.Sleep(funcWaitTime)
+	time.Sleep(syntheticWaitTime)
 	fmt.Println("user found !")
 }
 
 func getUserSubWait(s string, wg *sync.WaitGroup) {
 	defer wg.Done()
-	time.Sleep(funcWaitTime)
+	time.Sleep(syntheticWaitTime)
 	fmt.Println("subscription found !")
 }
 
 func generateQuoteWait(s string, wg *sync.WaitGroup) {
 	defer wg.Done()
-	time.Sleep(funcWaitTime)
+	time.Sleep(syntheticWaitTime)
 	fmt.Println("quote generated !")
 }
+
+// Mimics db / api processing time
+var syntheticWaitTime = time.Millisecond * 300
