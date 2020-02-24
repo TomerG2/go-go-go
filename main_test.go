@@ -37,7 +37,7 @@ func TestQuoteAPI_Load(t *testing.T) {
 
 	for i := 0; i < 500; i++ {
 		wg.Add(1)
-		go callAPI("http://localhost:8090/quote", &wg)
+		go callAPI("http://localhost:8090/quote", &wg, t)
 	}
 	wg.Wait()
 }
@@ -47,7 +47,7 @@ func TestQuoteAPI_Load_v2(t *testing.T) {
 
 	for i := 0; i < 500; i++ {
 		wg.Add(1)
-		go callAPI("http://localhost:8090/quote/v2", &wg)
+		go callAPI("http://localhost:8090/quote/v2", &wg, t)
 	}
 	wg.Wait()
 }
@@ -57,12 +57,16 @@ func TestQuoteAPI_Load_v3(t *testing.T) {
 
 	for i := 0; i < 500; i++ {
 		wg.Add(1)
-		go callAPI("http://localhost:8090/quote/v3", &wg)
+		go callAPI("http://localhost:8090/quote/v3", &wg, t)
 	}
 	wg.Wait()
 }
 
-func callAPI(url string, wg *sync.WaitGroup) {
+func callAPI(url string, wg *sync.WaitGroup, t *testing.T) {
 	defer wg.Done()
-	http.Get(url)
+	res, err := http.Get(url)
+	defer res.Body.Close()
+	if err != nil {
+		t.Fatalf("qoute failed")
+	}
 }
