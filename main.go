@@ -13,6 +13,7 @@ func main() {
 	http.HandleFunc("/quote", quoteHandler)
 	http.HandleFunc("/quote/v2", quoteHandlerConcurrent)
 	http.HandleFunc("/quote/v3", quoteHandlerWait)
+	fmt.Printf("http server listening on port: 8090")
 	http.ListenAndServe(":8090", nil)
 }
 
