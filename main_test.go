@@ -62,6 +62,16 @@ func TestQuoteAPI_Load_v3(t *testing.T) {
 	wg.Wait()
 }
 
+func TestQuoteAPI_Load_v3_15k(t *testing.T) {
+	var wg sync.WaitGroup
+
+	for i := 0; i < 15000; i++ {
+		wg.Add(1)
+		go callAPI("http://localhost:8090/quote", &wg)
+	}
+	wg.Wait()
+}
+
 func callAPI(url string, wg *sync.WaitGroup) {
 	defer wg.Done()
 	http.Get(url)
