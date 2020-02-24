@@ -35,7 +35,7 @@ func TestQuoteAPI_WaitGroup(t *testing.T) {
 func TestQuoteAPI_Load(t *testing.T) {
 	var wg sync.WaitGroup
 
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 500; i++ {
 		wg.Add(1)
 		go callAPI("http://localhost:8090/quote", &wg)
 	}
@@ -45,7 +45,7 @@ func TestQuoteAPI_Load(t *testing.T) {
 func TestQuoteAPI_Load_v2(t *testing.T) {
 	var wg sync.WaitGroup
 
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 500; i++ {
 		wg.Add(1)
 		go callAPI("http://localhost:8090/quote/v2", &wg)
 	}
@@ -55,7 +55,7 @@ func TestQuoteAPI_Load_v2(t *testing.T) {
 func TestQuoteAPI_Load_v3(t *testing.T) {
 	var wg sync.WaitGroup
 
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 500; i++ {
 		wg.Add(1)
 		go callAPI("http://localhost:8090/quote/v3", &wg)
 	}
