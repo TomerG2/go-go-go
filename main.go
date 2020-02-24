@@ -40,14 +40,15 @@ func generateQuote(s string) {
 
 // Asynchronous functions, No Wait
 func quoteHandlerConcurrent(w http.ResponseWriter, req *http.Request) {
+	//defer elapsed("Done quote v2 ready")()
 	go getUser("a1")
 	go getUserSub("a1")
 	go generateQuote("a1")
-	fmt.Fprintf(w, "Done quote ready\n")
 }
 
 // Wait group functions (old example)
 func quoteHandlerWait(w http.ResponseWriter, req *http.Request) {
+	//defer elapsed("Done quote v3 ready")()
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go getUserWait("a1", &wg)
@@ -56,7 +57,6 @@ func quoteHandlerWait(w http.ResponseWriter, req *http.Request) {
 	wg.Add(1)
 	go generateQuoteWait("a1", &wg)
 	wg.Wait()
-	fmt.Fprintf(w, "Done quote ready\n")
 }
 
 func getUserWait(s string, wg *sync.WaitGroup) {
