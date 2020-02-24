@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	_ "net/http/pprof"
+	"runtime"
 	"sync"
 	"time"
 )
@@ -84,7 +85,7 @@ var syntheticWaitTime = time.Millisecond * 300
 func elapsed(w http.ResponseWriter) func() {
 	start := time.Now()
 	return func() {
-		fmt.Printf("Quoute Ready ! [took=%v]\n", time.Since(start))
-		fmt.Fprintf(w, "Quoute Ready ! [took=%v]\n", time.Since(start))
+		fmt.Printf("Quoute Ready ! [took=%v] [goroutines=%d]\n", time.Since(start), runtime.NumGoroutine())
+		fmt.Fprintf(w, "Quoute Ready ! [took=%v] [goroutines=%d]\n", time.Since(start), runtime.NumGoroutine())
 	}
 }
