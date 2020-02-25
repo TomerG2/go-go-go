@@ -101,7 +101,7 @@ var syntheticWaitTime = time.Millisecond * 300
 func elapsed(version string, w http.ResponseWriter) func() {
 	start := time.Now()
 	return func() {
-		msg := fmt.Sprintf("Quoute Ready [v=%s]! [took=%v] [goroutines=%d]\n", version, time.Since(start), runtime.NumGoroutine())
+		msg := fmt.Sprintf("Quoute Ready [v=%s] [took=%v] [goroutines=%d]\n", version, time.Since(start), runtime.NumGoroutine())
 		fmt.Printf(msg)
 		fmt.Fprintf(w, msg)
 	}
