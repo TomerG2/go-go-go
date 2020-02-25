@@ -62,7 +62,7 @@ func TestQuoteAPI_Load_v3(t *testing.T) {
 	wg.Wait()
 }
 
-func TestQuoteAPI_Load_v3_50k(t *testing.T) {
+func TestQuoteAPI_Load_v3_20k(t *testing.T) {
 	var wg sync.WaitGroup
 
 	for j := 0; j < 20000; j += 10000 {
@@ -78,7 +78,7 @@ func callAPI(url string, wg *sync.WaitGroup, t *testing.T) {
 	defer wg.Done()
 	res, err := http.Get(url)
 	if err != nil {
-		t.Fatalf("qoute failed")
+		t.Fatalf("qoute failed [err=%s]", err.Error())
 	}
 	defer res.Body.Close()
 }
